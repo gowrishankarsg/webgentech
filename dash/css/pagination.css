@@ -1,0 +1,11 @@
+	.page-span {
+		padding: 5px 10px 5px 10px;	border: 1px solid #dddddd;
+	}
+	.paging a.current_page{
+		background-color: #2f4050;
+		color: white;
+		padding: 5px 0px 5px 0px;
+	}
+	a{
+	color: #EB067B;
+	}
