@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script>
+	$(document).ready(function() {
+		
+		$('#login-button').on('click', function() {
+			var email = $("#login-email").val();
+			var password = $("#login-password").val();
+			if (email == '' || password == '') {
+				swal("Please fill all fields", {
+				  button: "Ok",  
+				});
+			}
+			else {
+				$.post("callingloginapi.php", {
+					email: email,
+					password: password
+				}, 
+				function(data) {
+					if (data == 'You have successfully logged in!') {
+					$("form")[0].reset();
+					swal(data, {
+					  button: "Ok",
+					}).then(function() {
+						window.location = "dashboard.php";
+					});
+				} else {
+					swal(data, {
+					  button: "Ok",
+					});
+				}
+				});
+			}
+		});
+	  
+		$('#create-button').on('click', function() {
+			var name = $("#name").val();
+			var email = $("#email").val();
+			var password = $("#password").val();
+			var cpassword = $("#cpassword").val();
+			if (name == '' || email == '' || password == '' || cpassword == '') {
+				swal("Please fill all fields", {
+				  button: "Ok",  
+				});
+			} else if ((password.length) < 8) {
+				swal("Password should atleast 8 character in length", {
+				  button: "Ok",  
+				});
+			} else if ((password) !=(cpassword)) {
+				swal("Your passwords don't match. Try again", {
+				  button: "Ok",  
+				});
+			} else {
+				$.post("callingregapi.php", {
+					name: name,
+					email: email,
+					password: password
+				}, 
+				function(data) {
+					if (data == 'You have Successfully Registered!') {
+					$("form")[0].reset();
+					swal(data, {
+					  button: "Ok",
+					}).then(function() {
+						window.location = "dashboard.php";
+					});
+				} else {
+					swal(data, {
+					  button: "Ok",
+					});
+				}
+				});
+			}
+		});
+	  
+		$('.message a').on('click', function() {
+			$('form').animate({
+				height: "toggle",
+				opacity: "toggle"
+			}, "fast");
+		});
+	});
+  </script>
+</head>
+<body>
+	<div class="login-page">
+	  <div class="form">
+		<form class="register-form">
+		  <input id="name" type="text" placeholder="Username" name="name"/>
+		  <input id="email" type="text" placeholder="Email address" name="email"/>
+		  <input id="password" type="password" placeholder="Password" name="password"/>
+		  <input id="cpassword" type="password" placeholder="Re-Enter Password" name="cpassword" >
+		  <button name="create-button" type="button" id="create-button">create</button>
+		  <p class="message">Already registered? <a href="#">Sign In</a></p>
+		</form>
+		<form class="login-form">
+		  <input id="login-email" type="text" placeholder="Email-Id" name="login-email"/>
+		  <input id="login-password" type="text" placeholder="Password" name="login-password"/>
+		  <button name="login-button" type="button" id="login-button">login</button>
+		  <p class="message">Not registered? <a href="#">Create an account</a></p>
+		</form>
+	  </div>
+	</div>
+</body>
+</html>
